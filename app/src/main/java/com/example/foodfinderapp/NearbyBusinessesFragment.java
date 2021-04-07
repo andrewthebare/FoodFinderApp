@@ -1,19 +1,30 @@
 package com.example.foodfinderapp;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link NearbyBusinessesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NearbyBusinessesFragment extends Fragment {
+public class NearbyBusinessesFragment extends Fragment implements OnMapReadyCallback {
+
+    GoogleMap m_googleMap;
+    MapView m_mapView;
+    View m_view;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +70,38 @@ public class NearbyBusinessesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nearby_businesses, container, false);
+        m_view = inflater.inflate(R.layout.fragment_nearby_businesses, container, false);
+        return m_view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        m_mapView = (MapView) m_view.findViewById(R.id.map);
+        if (m_mapView != null) {
+            m_mapView.onCreate(null);
+            m_mapView.onResume();
+            m_mapView.getMapAsync(this);
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        MapsInitializer.initialize(getContext());
+
+        m_googleMap = googleMap;
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(34.6834, -82.8374))
+                .title("Clemson"));
+
+        CameraPosition clemson = CameraPosition.builder()
+                .target(new LatLng(34.6834, -82.8374))
+                .zoom(16)
+                .build();
+
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(clemson));
     }
 }
