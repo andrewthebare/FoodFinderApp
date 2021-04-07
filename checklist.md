@@ -13,6 +13,6 @@
 4. Camera for Profile picture
 5. Upload reciept code feature
 ## Backend Tasks
-5. Set up database server
-6. REST API to fetch data from server
-7. restaurant class to be filled with pulled data
+1. Set up database server
+2. REST API to fetch data from server
+3. restaurant class to be filled with pulled data
