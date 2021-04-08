@@ -1,11 +1,11 @@
 package com.example.foodfinderapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -13,71 +13,57 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link NearbyBusinessesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ *   Fragment for nearby businesses page
  */
 public class NearbyBusinessesFragment extends Fragment implements OnMapReadyCallback {
 
-    GoogleMap m_googleMap;
-    MapView m_mapView;
-    View m_view;
+    private GoogleMap m_googleMap;
+    private MapView m_mapView;
+    private View m_view;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private ArrayList<Business> m_businesses;
+    private HashMap<Marker, Business> m_businessHashMap = new HashMap<>();
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    // Required empty public constructor
     public NearbyBusinessesFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NearbyBusinessesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NearbyBusinessesFragment newInstance(String param1, String param2) {
+    // Factory method to create new instance
+    public static NearbyBusinessesFragment newInstance() {
         NearbyBusinessesFragment fragment = new NearbyBusinessesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
+    // Called when fragment is created
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        // Get businesses in database
+        m_businesses = Database.getInstance().getBusinesses();
     }
 
+    // Called when view is created
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         m_view = inflater.inflate(R.layout.fragment_nearby_businesses, container, false);
         return m_view;
     }
 
+    // Called after view is created
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Create google map
         m_mapView = (MapView) m_view.findViewById(R.id.map);
         if (m_mapView != null) {
             m_mapView.onCreate(null);
@@ -86,22 +72,49 @@ public class NearbyBusinessesFragment extends Fragment implements OnMapReadyCall
         }
     }
 
+    // Called when google map is ready
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
 
+        // Set map type
         m_googleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(34.6834, -82.8374))
-                .title("Clemson"));
+        // Add businesses in the database as markers on the map
+        for (int i = 0; i < m_businesses.size(); i++) {
+            // Create marker
+            Marker marker = googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(m_businesses.get(i).getLat(), m_businesses.get(i).getLng()))
+                    .title(m_businesses.get(i).getName()));
 
+            // Use hashmap to store which marker goes with which business
+            m_businessHashMap.put(marker, m_businesses.get(i));
+        }
+
+        // Create a position for the map to start out at
         CameraPosition clemson = CameraPosition.builder()
                 .target(new LatLng(34.6834, -82.8374))
                 .zoom(16)
                 .build();
 
+        // Move the camera to that position
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(clemson));
+
+        // Listener for when marker is clicked on the map
+        m_googleMap.setOnMarkerClickListener(
+                new GoogleMap.OnMarkerClickListener() {
+
+                    // Called when marker is clicked on the map
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        // Start new activity that shows the business page of the marker that was clicked on
+                        Intent intent = new Intent (getActivity(), BusinessActivity.class);
+                        intent.putExtra("business", m_businessHashMap.get(marker));
+                        startActivity(intent);
+                        return false;
+                    }
+                });
     }
+
 }
