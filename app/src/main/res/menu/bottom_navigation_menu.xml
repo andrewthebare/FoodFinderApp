@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_saved_businesses"
+        android:icon="@drawable/saved_businesses_icon"
+        android:title="Saved Businesses" />
+    <item
+        android:id="@+id/navigation_nearby_businesses"
+        android:icon="@drawable/nearby_businesses_icon"
+        android:title="Nearby Businesses" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/profile_icon"
+        android:title="Profile" />
+
+</menu>

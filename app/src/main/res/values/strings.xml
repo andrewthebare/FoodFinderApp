@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FoodFinderApp</string>
+    <string name="map_api_key">AIzaSyBDIAL2zgowDFD0PIC2nrliSaBAQ-IBdiY</string>
 </resources>
