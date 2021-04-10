@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".SavedBusinessesFragment">
 
+    <TextView
+        android:id="@+id/infoTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Businesses You Save\nWill Appear Here"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/savedBusinessesRV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedBusinessesRV"
         android:layout_width="0dp"

@@ -1,10 +1,10 @@
 package com.example.foodfinderapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +15,11 @@ import java.util.ArrayList;
  *   Fragment for saved businesses page
  */
 public class SavedBusinessesFragment extends Fragment {
+
+    TextView m_info;
+
+    RecyclerView m_recyclerView;
+    Adapter m_adapter;
 
     // Required empty public constructor
     public SavedBusinessesFragment() {
@@ -39,13 +44,13 @@ public class SavedBusinessesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_saved_businesses, container, false);
 
-        // Create the recycler view
-        RecyclerView recyclerView = view.findViewById(R.id.savedBusinessesRV);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        m_info = view.findViewById(R.id.infoTV);
 
-        // Create the adapter
-        Adapter adapter = new Adapter(Database.getInstance().getSavedBusinesses());
-        recyclerView.setAdapter(adapter);
+        // Create the recycler view
+        m_recyclerView = view.findViewById(R.id.savedBusinessesRV);
+        m_recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        redrawPage();
 
         return view;
     }
@@ -56,10 +61,35 @@ public class SavedBusinessesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
+    // Called when fragment resumes
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Redraw the page
+        redrawPage();
+    }
+
+    // Redraws the page
+    private void redrawPage () {
+        ArrayList<Business> savedBusinesses = Database.getInstance().getSavedBusinesses();
+
+        // Determine if to show info
+        if (savedBusinesses.size() == 0) {
+            m_info.setVisibility(View.VISIBLE);
+        } else {
+            m_info.setVisibility(View.INVISIBLE);
+        }
+
+        // Refresh adapter
+        m_adapter = new Adapter(savedBusinesses);
+        m_recyclerView.setAdapter(m_adapter);
+    }
+
     /**
      *   The holder for a list item
      */
-    private class Holder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class Holder extends RecyclerView.ViewHolder {
 
         Business m_business;
 
@@ -79,12 +109,6 @@ public class SavedBusinessesFragment extends Fragment {
             m_business = business;
             m_businessName.setText(business.getName());
             m_points.setText(Integer.toString(business.getPoints()));
-        }
-
-        // Called when item is clicked
-        @Override
-        public void onClick(View view) {
-            Log.d("%%%%%", Integer.toString(this.getLayoutPosition()));
         }
 
     }
@@ -112,6 +136,20 @@ public class SavedBusinessesFragment extends Fragment {
         @Override
         public void onBindViewHolder(Holder holder, int position) {
             holder.bind(m_savedBusinesses.get(position));
+
+            // Setup click listener
+            holder.itemView.setOnClickListener(
+                    new View.OnClickListener() {
+
+                        // Called when item in list is clicked on
+                        @Override
+                        public void onClick (View view) {
+                            // Start new activity that shows the business page of the list item that was clicked on
+                            Intent intent = new Intent (getActivity(), BusinessActivity.class);
+                            intent.putExtra("business", m_savedBusinesses.get(position));
+                            startActivity(intent);
+                        }
+                    });
         }
 
         // Getter for the number of items in the list
