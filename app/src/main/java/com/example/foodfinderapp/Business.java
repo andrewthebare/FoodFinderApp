@@ -8,21 +8,22 @@ import java.util.ArrayList;
  */
 public class Business implements Serializable {
 
-    private static int businessNum = 0;
+    private static int s_businessNum = 0;
 
     private int m_index;
     private String m_name;
     private String m_description;
     private float m_lat;
     private float m_lng;
-    private ArrayList<Reward> rewards = new ArrayList<>();
+    private ArrayList<Reward> m_rewards = new ArrayList<>();
     private boolean m_isSaved = false;
+    private int m_points = 0;
 
     // Constructor
     public Business (String name, String description, float lat, float lng) {
         // Index updated statically
-        m_index = businessNum;
-        businessNum++;
+        m_index = s_businessNum;
+        s_businessNum++;
 
         m_name = name;
         m_description = description;
@@ -60,14 +61,24 @@ public class Business implements Serializable {
         return m_isSaved;
     }
 
+    // Getter for number of points
+    public int getPoints () {
+        return m_points;
+    }
+
     // Setter for saving business
     public void setIfSaved (boolean isSaved) {
         m_isSaved = isSaved;
     }
 
+    // Setter for number of points
+    public void setPoints (int points) {
+        m_points = points;
+    }
+
     // Adds a reward to a business
     public void addReward (Reward reward) {
-        rewards.add(reward);
+        m_rewards.add(reward);
     }
 
 }

@@ -13,7 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  */
 public class MainActivity extends AppCompatActivity {
 
-    BottomNavigationView bottomNavigation;
+    BottomNavigationView m_bottomNavigation;
 
     // Called when activity is created
     @Override
@@ -22,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Setup bottom navigation bar
-        bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
-        openFragment(SavedBusinessesFragment.newInstance("", ""));
+        m_bottomNavigation = findViewById(R.id.bottom_navigation);
+        m_bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        openFragment(SavedBusinessesFragment.newInstance());
     }
 
     // Opens a fragment from the bottom navigation bar
@@ -45,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
                     // Determine which menu item selected
                     switch (item.getItemId()) {
                         case R.id.navigation_saved_businesses:
-                            openFragment(SavedBusinessesFragment.newInstance("", ""));
+                            openFragment(SavedBusinessesFragment.newInstance());
                             return true;
                         case R.id.navigation_nearby_businesses:
                             openFragment(NearbyBusinessesFragment.newInstance());
                             return true;
                         case R.id.navigation_profile:
-                            openFragment(ProfileFragment.newInstance("", ""));
+                            openFragment(ProfileFragment.newInstance());
                             return true;
                     }
                     return false;
