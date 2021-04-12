@@ -8,6 +8,8 @@ import java.util.ArrayList;
 public class Database {
 
     private static Database s_database;
+
+    // List of all businesses in the database
     private ArrayList<Business> m_businesses = new ArrayList<>();
 
     // Getter for the singleton instance
@@ -38,9 +40,33 @@ public class Database {
         m_businesses.add(b2);
     }
 
-    // Getter for the list of businesses in the database
+    // Getter for single business in database
+    public Business getBusiness (int index) {
+        return m_businesses.get(index);
+    }
+
+    // Getter for the list of all businesses in the database
     public ArrayList<Business> getBusinesses () {
         return m_businesses;
+    }
+
+    // Getter for the list of saved businesses in the database
+    public ArrayList<Business> getSavedBusinesses () {
+        ArrayList<Business> savedBusinesses = new ArrayList<>();
+
+        // Add saved businesses to new arraylist
+        for (int i = 0; i < m_businesses.size(); i++) {
+            if (m_businesses.get(i).getIfSaved() == true) {
+                savedBusinesses.add(m_businesses.get(i));
+            }
+        }
+
+        return savedBusinesses;
+    }
+
+    // Set if a business is saved or not
+    public void setIfBusinessSaved (Business business, boolean isSaved) {
+        m_businesses.get(business.getIndex()).setIfSaved(isSaved);
     }
 
 }
