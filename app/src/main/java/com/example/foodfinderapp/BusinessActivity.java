@@ -72,6 +72,7 @@ public class BusinessActivity extends AppCompatActivity {
             Database.getInstance().getCurrentUser().addFavorite(m_business);
         }else{
             //remove favorite
+            Database.getInstance().getCurrentUser().removeFavorite(m_business);
         }
 
         // Update setIfSavedBtn

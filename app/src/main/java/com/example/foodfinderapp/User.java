@@ -2,6 +2,7 @@ package com.example.foodfinderapp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Predicate;
 
 public class User {
     private static int numberOfUsers;
@@ -32,6 +33,17 @@ public class User {
     public void addFavorite(Business b){
         favoriteBusList.add(b);
         favoriteBusIndexList.add(b.getIndex());
+    }
+
+    public void removeFavorite(Business b){
+        favoriteBusIndexList.remove(favoriteBusIndexList.indexOf(b.getIndex()));
+        Predicate<Business> pr= (Business bus) ->(bus.getIndex() ==b.getIndex());
+        favoriteBusList.removeIf(pr);
+
+        System.out.println("\tfavoriteBusIndexList");
+        System.out.println(favoriteBusIndexList);
+        System.out.println("\tfavoriteBusList");
+        System.out.println(favoriteBusList);
     }
 
     public boolean isFavorite(int index){
