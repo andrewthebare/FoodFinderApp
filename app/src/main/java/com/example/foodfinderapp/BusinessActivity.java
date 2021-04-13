@@ -24,6 +24,7 @@ public class BusinessActivity extends AppCompatActivity {
 
     TextView m_businessName;
     TextView m_businessDescription;
+    TextView m_pointDisplay;
     Button m_setIfSavedBtn;
     Button m_getPointsButton;
 
@@ -35,6 +36,7 @@ public class BusinessActivity extends AppCompatActivity {
 
         m_businessName = (TextView) findViewById(R.id.businessNameTV);
         m_businessDescription = (TextView) findViewById(R.id.businessDescriptionTV);
+        m_pointDisplay = (TextView) findViewById(R.id.pointsTVDisplay);
         m_setIfSavedBtn = (Button) findViewById(R.id.setIfSavedBtn);
 
 
@@ -51,6 +53,11 @@ public class BusinessActivity extends AppCompatActivity {
             // Set values on page
             m_businessName.setText(m_business.getName());
             m_businessDescription.setText(m_business.getDescription());
+            if(!currentUser.busListContains(m_business)) {
+                Database.getInstance().getCurrentUser().addBusiness(m_business);
+                currentUser = Database.getInstance().getCurrentUser();
+            }
+            m_pointDisplay.setText(Integer.toString(currentUser.getPoints(m_business.getIndex())));
             updateSetIfSavedBtn();
         }
 
@@ -60,24 +67,28 @@ public class BusinessActivity extends AppCompatActivity {
     public void setIfSavedBtnClicked (android.view.View view) {
         // Update database
 //        m_database.setIfBusinessSaved(m_business, !m_database.getBusiness(m_business.getIndex()).getIfSaved());
-        if(!currentUser.busListContains(m_business)){
+        if(!currentUser.isFavorite(m_business.getIndex())){
             Database.getInstance().getCurrentUser().addBusiness(m_business);
+            Database.getInstance().getCurrentUser().addFavorite(m_business);
+        }else{
+            //remove favorite
         }
 
         // Update setIfSavedBtn
         updateSetIfSavedBtn();
 
         // Show toast indicating change
-        if (!Database.getInstance().getCurrentUser().busListContains(m_business)) {
+        if (!Database.getInstance().getCurrentUser().isFavorite(m_business.getIndex())) {
             Toast.makeText(this, "Business Removed from Saved", Toast.LENGTH_SHORT).show();
         } else {
+//            Database.getInstance().getCurrentUser().addFavorite(m_business);
             Toast.makeText(this, "Business Added to Saved", Toast.LENGTH_SHORT).show();
         }
     }
 
     // Changes the look of the setIfSavedBtn depending if the business is saved or not
     private void updateSetIfSavedBtn () {
-        if (!Database.getInstance().getCurrentUser().busListContains(m_business)) {
+        if (!Database.getInstance().getCurrentUser().isFavorite(m_business.getIndex())) {
             m_setIfSavedBtn.setText("+");
         } else {
             m_setIfSavedBtn.setText("x");
@@ -109,9 +120,15 @@ public class BusinessActivity extends AppCompatActivity {
         //TODO shoot a request to database
         //TODO wait for response
 
-        boolean goodResponse = false;
+        boolean goodResponse = true;
         if (goodResponse){
-            //TODO add points
+            Database.getInstance().getCurrentUser().incrementPoints(m_business.getIndex(),10);
+            Toast.makeText(this, "Points added to your profile!", Toast.LENGTH_SHORT).show();
+
+            //TODO refreshes page, not sure if that's great practice tho
+            //Actually causes an error that doesn't crash the app soooooo idk
+            finish();
+            this.startActivity(getIntent());
 
         }else{
             //Tell user they entered a wrong number

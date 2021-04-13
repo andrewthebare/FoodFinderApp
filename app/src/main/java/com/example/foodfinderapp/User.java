@@ -9,6 +9,7 @@ public class User {
     private int id;
     private String name;
     private ArrayList<Business> favoriteBusList;
+    private ArrayList<Integer> favoriteBusIndexList;
     private HashMap<Integer, Integer> pointsCount;
 
     public User(String name){
@@ -18,14 +19,23 @@ public class User {
         //weak and breaks if you delete users, but we won't worry about that
         id = numberOfUsers;
 
+        favoriteBusIndexList = new ArrayList<>();
         favoriteBusList = new ArrayList<>();
         pointsCount = new HashMap<>();
     }
 
     public void addBusiness(Business b){
-        favoriteBusList.add(b);
         pointsCount.putIfAbsent(b.getIndex(), 0);
         System.out.println("New Val set! "+pointsCount.get(b.getIndex()));
+    }
+
+    public void addFavorite(Business b){
+        favoriteBusList.add(b);
+        favoriteBusIndexList.add(b.getIndex());
+    }
+
+    public boolean isFavorite(int index){
+        return favoriteBusIndexList.contains(index);
     }
 
     public ArrayList<Business> getFavoriteList(){
@@ -52,6 +62,10 @@ public class User {
 
     //Could create a new businessIndex and add to it if index doesn't already exist, IDK
     public void incrementPoints(int businessIndex, int pointAmount){
+        System.out.print("Point Count: ");
+
+
+        System.out.println(pointsCount);
         pointsCount.put(businessIndex, pointAmount+pointsCount.get(businessIndex));
     }
 }
