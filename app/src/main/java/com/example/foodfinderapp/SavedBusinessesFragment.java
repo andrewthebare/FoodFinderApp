@@ -72,7 +72,7 @@ public class SavedBusinessesFragment extends Fragment {
 
     // Redraws the page
     private void redrawPage () {
-        ArrayList<Business> savedBusinesses = Database.getInstance().getSavedBusinesses();
+        ArrayList<Business> savedBusinesses = Database.getInstance().getCurrentUser().getFavoriteList();
 
         // Determine if to show info
         if (savedBusinesses.size() == 0) {

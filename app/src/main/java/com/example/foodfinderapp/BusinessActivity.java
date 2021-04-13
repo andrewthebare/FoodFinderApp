@@ -20,6 +20,7 @@ public class BusinessActivity extends AppCompatActivity {
 
     Database m_database;
     Business m_business;
+    User currentUser;
 
     TextView m_businessName;
     TextView m_businessDescription;
@@ -36,6 +37,7 @@ public class BusinessActivity extends AppCompatActivity {
         m_businessDescription = (TextView) findViewById(R.id.businessDescriptionTV);
         m_setIfSavedBtn = (Button) findViewById(R.id.setIfSavedBtn);
 
+
         //popup code entry
         m_getPointsButton = (Button) findViewById(R.id.getPointsBtn);
         m_getPointsButton.setOnClickListener(this::onEnterPointsButtonClick);
@@ -44,24 +46,29 @@ public class BusinessActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             m_database = Database.getInstance();
             m_business = (Business) getIntent().getSerializableExtra("business");
+            currentUser = Database.getInstance().getCurrentUser();
 
             // Set values on page
             m_businessName.setText(m_business.getName());
             m_businessDescription.setText(m_business.getDescription());
             updateSetIfSavedBtn();
         }
+
     }
 
     // Called when setIfSavedBtn is clicked
     public void setIfSavedBtnClicked (android.view.View view) {
         // Update database
-        m_database.setIfBusinessSaved(m_business, !m_database.getBusiness(m_business.getIndex()).getIfSaved());
+//        m_database.setIfBusinessSaved(m_business, !m_database.getBusiness(m_business.getIndex()).getIfSaved());
+        if(!currentUser.busListContains(m_business)){
+            Database.getInstance().getCurrentUser().addBusiness(m_business);
+        }
 
         // Update setIfSavedBtn
         updateSetIfSavedBtn();
 
         // Show toast indicating change
-        if (m_database.getBusiness(m_business.getIndex()).getIfSaved() == false) {
+        if (!Database.getInstance().getCurrentUser().busListContains(m_business)) {
             Toast.makeText(this, "Business Removed from Saved", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Business Added to Saved", Toast.LENGTH_SHORT).show();
@@ -70,7 +77,7 @@ public class BusinessActivity extends AppCompatActivity {
 
     // Changes the look of the setIfSavedBtn depending if the business is saved or not
     private void updateSetIfSavedBtn () {
-        if (m_database.getBusiness(m_business.getIndex()).getIfSaved() == false) {
+        if (!Database.getInstance().getCurrentUser().busListContains(m_business)) {
             m_setIfSavedBtn.setText("+");
         } else {
             m_setIfSavedBtn.setText("x");
