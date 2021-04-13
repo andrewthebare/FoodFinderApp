@@ -17,4 +17,12 @@
         android:layout_height="wrap_content"
         android:text="Switch User" />
 
+    <EditText
+        android:id="@+id/userSwitchNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="200dp"
+        android:ems="10"
+        android:inputType="number" />
+
 </FrameLayout>
