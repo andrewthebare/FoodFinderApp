@@ -59,11 +59,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:text="Points: 0"
+        android:text="Points: "
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/bottomLine"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topLine" />
+
+    <TextView
+        android:id="@+id/pointsTVDisplay"
+        android:layout_width="53dp"
+        android:layout_height="40dp"
+        android:text="0"
+        android:textSize="30sp"
+        app:layout_constraintStart_toEndOf="@+id/pointsTV"
+        app:layout_constraintTop_toTopOf="@+id/pointsTV" />
 
     <Button
         android:id="@+id/getPointsBtn"

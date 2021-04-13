@@ -11,6 +11,8 @@ public class Database {
 
     // List of all businesses in the database
     private ArrayList<Business> m_businesses = new ArrayList<>();
+    private ArrayList<User> m_users = new ArrayList<>();
+    private User currentUser;
 
     // Getter for the singleton instance
     public static Database getInstance() {
@@ -38,11 +40,23 @@ public class Database {
         b2.addReward(new Reward("Reward 0", "This is reward 0.", 25));
         b2.addReward(new Reward("Reward 1", "This is reward 1.", 25));
         m_businesses.add(b2);
+
+        User testUser = new User("Tom");
+        m_users.add(testUser);
+        testUser = new User("Jerry");
+        m_users.add(testUser);
+        currentUser = m_users.get(0);
     }
 
     // Getter for single business in database
     public Business getBusiness (int index) {
         return m_businesses.get(index);
+    }
+
+    // Getter for current user
+    public User getCurrentUser(){
+        System.out.println(currentUser.getFavoriteList().toString());
+        return currentUser;
     }
 
     // Getter for the list of all businesses in the database
@@ -67,6 +81,10 @@ public class Database {
     // Set if a business is saved or not
     public void setIfBusinessSaved (Business business, boolean isSaved) {
         m_businesses.get(business.getIndex()).setIfSaved(isSaved);
+    }
+
+    public void setCurrentUser(int index){
+        currentUser = m_users.get(index);
     }
 
 }
