@@ -27,7 +27,7 @@ public class User {
 
     public void addBusiness(Business b){
         pointsCount.putIfAbsent(b.getIndex(), 0);
-        System.out.println("New Val set! "+pointsCount.get(b.getIndex()));
+//        System.out.println("New Val set! "+pointsCount.get(b.getIndex()));
     }
 
     public void addFavorite(Business b){
@@ -40,10 +40,10 @@ public class User {
         Predicate<Business> pr= (Business bus) ->(bus.getIndex() ==b.getIndex());
         favoriteBusList.removeIf(pr);
 
-        System.out.println("\tfavoriteBusIndexList");
-        System.out.println(favoriteBusIndexList);
-        System.out.println("\tfavoriteBusList");
-        System.out.println(favoriteBusList);
+//        System.out.println("\tfavoriteBusIndexList");
+//        System.out.println(favoriteBusIndexList);
+//        System.out.println("\tfavoriteBusList");
+//        System.out.println(favoriteBusList);
     }
 
     public boolean isFavorite(int index){
@@ -55,8 +55,6 @@ public class User {
     }
 
     public boolean busListContains(Business b){
-        System.out.println("B: "+ b.getIndex());
-        System.out.println("D: "+ pointsCount.containsKey(b.getIndex()));
         return pointsCount.containsKey(b.getIndex());
     }
 
