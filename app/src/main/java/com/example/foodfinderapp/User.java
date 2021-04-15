@@ -12,7 +12,7 @@ public class User {
     private int id;
     public String name;
     public String userName;
-    private Bitmap profilePic;
+    public Bitmap profilePic;
     private ArrayList<Business> favoriteBusList;
     private ArrayList<Integer> favoriteBusIndexList;
     private HashMap<Integer, Integer> pointsCount;
@@ -21,6 +21,7 @@ public class User {
         numberOfUsers++;
         this.name = name;
         userName = uName;
+        profilePic = null;
 
         //weak and breaks if you delete users, but we won't worry about that
         id = numberOfUsers;

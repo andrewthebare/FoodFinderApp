@@ -1,7 +1,11 @@
 package com.example.foodfinderapp;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  *   Fragment for profile page
@@ -63,7 +69,14 @@ public class ProfileFragment extends Fragment {
 
         nameDisplay.setText(currentUser.name);
         usernameDisplay.setText('@'+ currentUser.userName);
-        //TODO Logic to set default PP, otherwise load saved PP
+        changePicBTN.setOnClickListener(this::takePhotoClick);
+        //TODO find better default pic
+        if(currentUser.profilePic == null){
+            //default
+            System.out.println("No profile pic!");
+        }else{
+            profilePic.setImageBitmap(currentUser.profilePic);
+        }
 
         switchUser.setOnClickListener(this::onSwitchUserClick);
     }
@@ -72,4 +85,25 @@ public class ProfileFragment extends Fragment {
         Database.getInstance().setCurrentUser(Integer.parseInt(editUserNum.getText().toString()));
     }
 
+    // From Zybooks
+    public void takePhotoClick(View view) {
+
+        // Start the activity that can handle the implicit intent
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, 1);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+
+            // Show preview
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            profilePic.setImageBitmap(imageBitmap);
+            Database.getInstance().getCurrentUser().setPicture(imageBitmap);
+        }
+    }
 }
