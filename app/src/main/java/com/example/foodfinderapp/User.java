@@ -1,5 +1,7 @@
 package com.example.foodfinderapp;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Predicate;
@@ -8,14 +10,17 @@ public class User {
     private static int numberOfUsers;
 
     private int id;
-    private String name;
+    public String name;
+    public String userName;
+    private Bitmap profilePic;
     private ArrayList<Business> favoriteBusList;
     private ArrayList<Integer> favoriteBusIndexList;
     private HashMap<Integer, Integer> pointsCount;
 
-    public User(String name){
+    public User(String name, String uName){
         numberOfUsers++;
         this.name = name;
+        userName = uName;
 
         //weak and breaks if you delete users, but we won't worry about that
         id = numberOfUsers;
@@ -77,5 +82,9 @@ public class User {
 
         System.out.println(pointsCount);
         pointsCount.put(businessIndex, pointAmount+pointsCount.get(businessIndex));
+    }
+
+    public void setPicture(Bitmap pic){
+        profilePic = pic;
     }
 }

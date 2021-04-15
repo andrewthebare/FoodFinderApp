@@ -1,5 +1,14 @@
 package com.example.foodfinderapp;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+
+import androidx.core.content.res.ResourcesCompat;
+
 import java.util.ArrayList;
 
 /**
@@ -45,10 +54,9 @@ public class Database {
         b2.addReceipt(420, 42);
         m_businesses.add(b2);
 
-
-        User testUser = new User("Tom");
+        User testUser = new User("Tom", "tomthecat");
         m_users.add(testUser);
-        testUser = new User("Jerry");
+        testUser = new User("Jerry", "jerrythemouse");
         m_users.add(testUser);
         currentUser = m_users.get(0);
     }

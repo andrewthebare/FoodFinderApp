@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  *   Fragment for profile page
@@ -14,6 +16,11 @@ import android.widget.EditText;
 public class ProfileFragment extends Fragment {
     Button switchUser;
     EditText editUserNum;
+
+    ImageView profilePic;
+    Button changePicBTN;
+    TextView nameDisplay;
+    TextView usernameDisplay;
 
     // Required empty public constructor
     public ProfileFragment() {
@@ -46,6 +53,18 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         switchUser = view.findViewById(R.id.switchUser);
         editUserNum = (EditText) view.findViewById(R.id.userSwitchNum);
+        profilePic = (ImageView) view.findViewById(R.id.profilePic);
+        changePicBTN = (Button) view.findViewById(R.id.changePictureBTN);
+        nameDisplay = (TextView) view.findViewById(R.id.profileNameTV);
+        usernameDisplay = (TextView) view.findViewById(R.id.profileUsernameTV);
+
+        //pull down the user and get the current values
+        User currentUser = Database.getInstance().getCurrentUser();
+
+        nameDisplay.setText(currentUser.name);
+        usernameDisplay.setText('@'+ currentUser.userName);
+        //TODO Logic to set default PP, otherwise load saved PP
+
         switchUser.setOnClickListener(this::onSwitchUserClick);
     }
 
