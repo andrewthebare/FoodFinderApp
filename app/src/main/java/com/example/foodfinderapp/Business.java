@@ -2,6 +2,7 @@ package com.example.foodfinderapp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *   Stores information about a single business
@@ -19,6 +20,8 @@ public class Business implements Serializable {
     private boolean m_isSaved = false;
     private int m_points = 0;
 
+    private HashMap<Integer, Integer> receiptCodes = new HashMap<>();
+
     // Constructor
     public Business (String name, String description, float lat, float lng) {
         // Index updated statically
@@ -29,6 +32,22 @@ public class Business implements Serializable {
         m_description = description;
         m_lat = lat;
         m_lng = lng;
+    }
+
+    public void addReceipt(int code, int points){
+        receiptCodes.putIfAbsent(code, points);
+    }
+
+    public void removeReceipt(int code){
+        receiptCodes.remove(code);
+    }
+
+    public int getPoints(int code){
+        return receiptCodes.get(code);
+    }
+
+    public boolean containsReceipt(int r){
+        return receiptCodes.containsKey(r);
     }
 
     // Getter for index of business
