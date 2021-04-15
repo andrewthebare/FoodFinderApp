@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ public class BusinessActivity extends AppCompatActivity {
     TextView m_pointDisplay;
     Button m_setIfSavedBtn;
     Button m_getPointsButton;
+
+    EditText codeEnter;
 
     // Called when activity is created
     @Override
@@ -114,26 +117,27 @@ public class BusinessActivity extends AppCompatActivity {
         Button enterCode = (Button) popupView.findViewById(R.id.getPointsGO);
         enterCode.setOnClickListener(this::onCodeEnterClick);
 
+        codeEnter =  (EditText) popupView.findViewById(R.id.editTextNumber);
     }
 
     public void onCodeEnterClick(View view){
-        System.out.println("IM HERE");
-        //TODO shoot a request to database
-        //TODO wait for response
 
-        boolean goodResponse = true;
-        if (goodResponse){
-            Database.getInstance().getCurrentUser().incrementPoints(m_business.getIndex(),10);
-            Toast.makeText(this, "Points added to your profile!", Toast.LENGTH_SHORT).show();
+        if (!codeEnter.getText().toString().equals(""))  {
+            int code = Integer.parseInt(codeEnter.getText().toString());
 
-            //TODO refreshes page, not sure if that's great practice tho
-            //Actually causes an error that doesn't crash the app soooooo idk
-            finish();
-            this.startActivity(getIntent());
+            if(Database.getInstance().codeFound(code,m_business.getIndex())){
+                Database.getInstance().incrementPoints(m_business.getIndex(),code);
+                Toast.makeText(this, "Points added to your profile!", Toast.LENGTH_SHORT).show();
 
-        }else{
-            //Tell user they entered a wrong number
-            Toast.makeText(this, "Code Entered not Found!", Toast.LENGTH_SHORT).show();
+                //TODO refreshes page, not sure if that's great practice tho
+                //Actually causes an error that doesn't crash the app soooooo idk
+                finish();
+                this.startActivity(getIntent());
+
+            }else{
+                //Tell user they entered a wrong number
+                Toast.makeText(this, "Code Entered not Found!", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }

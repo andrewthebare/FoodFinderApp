@@ -28,6 +28,8 @@ public class Database {
         Business b0 = new Business("Business 0", "This is business 0.", 34.6832f, -82.8373f);
         b0.addReward(new Reward("Reward 0", "This is reward 0.", 5));
         b0.addReward(new Reward("Reward 1", "This is reward 1.", 15));
+        b0.addReceipt(69, 12);
+        b0.addReceipt(63, 5);
         m_businesses.add(b0);
 
         Business b1 = new Business("Business 1", "This is business 1.", 34.6846f, -82.8373f);
@@ -39,13 +41,24 @@ public class Database {
         Business b2 = new Business("Business 2", "This is business 2.", 34.6839f, -82.8354f);
         b2.addReward(new Reward("Reward 0", "This is reward 0.", 25));
         b2.addReward(new Reward("Reward 1", "This is reward 1.", 25));
+        b2.addReceipt(69, 52);
+        b2.addReceipt(420, 42);
         m_businesses.add(b2);
+
 
         User testUser = new User("Tom");
         m_users.add(testUser);
         testUser = new User("Jerry");
         m_users.add(testUser);
         currentUser = m_users.get(0);
+    }
+
+    public boolean codeFound(int code, int busID){
+        return getBusiness(busID).containsReceipt(code);
+    }
+    public void incrementPoints(int biz, int code){
+        currentUser.incrementPoints(biz, getBusiness(biz).getPoints(code));
+        getBusiness(biz).removeReceipt(code);
     }
 
     // Getter for single business in database
@@ -55,7 +68,6 @@ public class Database {
 
     // Getter for current user
     public User getCurrentUser(){
-        System.out.println(currentUser.getFavoriteList().toString());
         return currentUser;
     }
 
