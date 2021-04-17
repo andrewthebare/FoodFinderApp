@@ -34,24 +34,26 @@ public class Database {
     // Constructor ( Only called once )
     private Database () {
         // Add data to database
-        Business b0 = new Business("Business 0", "This is business 0.", 34.6832f, -82.8373f);
-        b0.addReward(new Reward("Reward 0", "This is reward 0.", 5));
-        b0.addReward(new Reward("Reward 1", "This is reward 1.", 15));
-        b0.addReceipt(69, 12);
-        b0.addReceipt(63, 5);
+        Business b0 = new Business("Spill The Beans", "Ice Cream Shop", 34.6836f, -82.8379f);
+        b0.addReward(new Reward("10% Off Purchase", "", 50));
+        b0.addReward(new Reward("Free Ice Cream", "Medium Ice Cream Cone", 100));
+        b0.addReceipt(000, 10);
+        b0.addReceipt(111, 100);
         m_businesses.add(b0);
 
-        Business b1 = new Business("Business 1", "This is business 1.", 34.6846f, -82.8373f);
-        b1.addReward(new Reward("Reward 0", "This is reward 0.", 10));
-        b1.addReward(new Reward("Reward 1", "This is reward 1.", 50));
-        b1.addReward(new Reward("Reward 2", "This is reward 2.", 100));
+        Business b1 = new Business("Tiger Sports Shop", "Sportswear Store", 34.6830f, -82.8372f);
+        b1.addReward(new Reward("Free Small Car Decal", "", 100));
+        b1.addReward(new Reward("15% Off Purchase", "", 250));
+        b1.addReward(new Reward("Free T-Shirt", "", 500));
+        b1.addReceipt(000, 50);
+        b1.addReceipt(111, 50);
         m_businesses.add(b1);
 
-        Business b2 = new Business("Business 2", "This is business 2.", 34.6839f, -82.8354f);
-        b2.addReward(new Reward("Reward 0", "This is reward 0.", 25));
-        b2.addReward(new Reward("Reward 1", "This is reward 1.", 25));
-        b2.addReceipt(69, 52);
-        b2.addReceipt(420, 42);
+        Business b2 = new Business("Insomnia Cookies", "Cookie Shop", 34.6836f, -82.8357f);
+        b2.addReward(new Reward("Free Cookie", "Sugar Cookie", 25));
+        b2.addReward(new Reward("Free Cookie", "Chocolate Chip", 25));
+        b2.addReceipt(000, 5);
+        b2.addReceipt(111, 25);
         m_businesses.add(b2);
 
         User testUser = new User("Tom", "tomthecat");

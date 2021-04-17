@@ -1,23 +1,34 @@
 package com.example.foodfinderapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 /**
  *   The activity for a business page
  */
 public class BusinessActivity extends AppCompatActivity {
+
+    Activity m_activity = this;
 
     Database m_database;
     Business m_business;
@@ -30,6 +41,9 @@ public class BusinessActivity extends AppCompatActivity {
     Button m_getPointsButton;
 
     EditText codeEnter;
+
+    RecyclerView m_recyclerView;
+    BusinessActivity.Adapter m_adapter;
 
     // Called when activity is created
     @Override
@@ -62,6 +76,13 @@ public class BusinessActivity extends AppCompatActivity {
             }
             m_pointDisplay.setText(Integer.toString(currentUser.getPoints(m_business.getIndex())));
             updateSetIfSavedBtn();
+
+            // Create the recycler view
+            m_recyclerView = findViewById(R.id.rewardsRV);
+            m_recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            redrawPage();
+
         }
 
     }
@@ -107,9 +128,7 @@ public class BusinessActivity extends AppCompatActivity {
         View popupView = inflater.inflate(R.layout.get_points_popup, null);
 
         // create the popup window
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, 400, true);
+        final PopupWindow popupWindow = new PopupWindow(popupView, 1000, 600, true);
 
         // show the popup window
         // which view you pass in doesn't matter, it is only used for the window tolken
@@ -138,6 +157,101 @@ public class BusinessActivity extends AppCompatActivity {
                 //Tell user they entered a wrong number
                 Toast.makeText(this, "Code Entered not Found!", Toast.LENGTH_SHORT).show();
             }
+        }
+
+    }
+
+    // Redraws the page
+    private void redrawPage () {
+        ArrayList<Reward> rewards = Database.getInstance().getBusiness(m_business.getIndex()).getRewards();
+
+        // Refresh adapter
+        m_adapter = new BusinessActivity.Adapter(rewards);
+        m_recyclerView.setAdapter(m_adapter);
+    }
+
+    /**
+     *   The holder for a list item
+     */
+    private class Holder extends RecyclerView.ViewHolder {
+
+        TextView m_rewardName;
+        TextView m_rewardDescription;
+        TextView m_rewardPoints;
+        ProgressBar m_rewardProgress;
+        Button m_rewardBtn;
+
+        // Constructor
+        public Holder (LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.reward_list_item, parent, false));
+
+            m_rewardName = itemView.findViewById(R.id.rewardNameTV);
+            m_rewardDescription = itemView.findViewById(R.id.rewardDescriptionTV);
+            m_rewardPoints = itemView.findViewById(R.id.rewardPointsTV);
+            m_rewardProgress = itemView.findViewById(R.id.rewardPB);
+            m_rewardBtn = itemView.findViewById(R.id.rewardClaimBtn);
+        }
+
+        // Sets the properties of the views
+        public void bind (Reward reward) {
+            m_rewardName.setText(reward.getName());
+            m_rewardDescription.setText(reward.getDescription());
+            m_rewardPoints.setText(Integer.toString(reward.getPointsNeededToClaim()));
+
+            m_rewardProgress.setMax(reward.getPointsNeededToClaim());
+            m_rewardProgress.setProgress(Database.getInstance().getCurrentUser().getPoints(m_business.getIndex()));
+
+            if (currentUser.getPoints(m_business.getIndex()) >= reward.getPointsNeededToClaim()) {
+                m_rewardBtn.setEnabled(true);
+            } else {
+                m_rewardBtn.setEnabled(false);
+            }
+        }
+
+    }
+
+    /**
+     *   The adapter for the list
+     */
+    private class Adapter extends RecyclerView.Adapter<BusinessActivity.Holder> {
+
+        private ArrayList<Reward> m_rewards;
+
+        // Constructor
+        public Adapter (ArrayList<Reward> rewards) {
+            m_rewards = rewards;
+        }
+
+        // Called when a new item is added to the list
+        @Override
+        public BusinessActivity.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(m_activity);
+            return new BusinessActivity.Holder(layoutInflater, parent);
+        }
+
+        // Called to bind view holder
+        @Override
+        public void onBindViewHolder(BusinessActivity.Holder holder, int position) {
+            holder.bind(m_rewards.get(position));
+
+            // Setup click listener
+            holder.itemView.findViewById(R.id.rewardClaimBtn).setOnClickListener(
+                    new View.OnClickListener() {
+
+                        // Called when button in list is clicked on
+                        @Override
+                        public void onClick (View view) {
+                            currentUser.decrementPoints(m_business.getIndex(), m_rewards.get(position).getPointsNeededToClaim());
+                            redrawPage();
+                            m_pointDisplay.setText(Integer.toString(Database.getInstance().getCurrentUser().getPoints(m_business.getIndex())));
+                        }
+                    });
+        }
+
+        // Getter for the number of items in the list
+        @Override
+        public int getItemCount() {
+            return m_rewards.size();
         }
 
     }

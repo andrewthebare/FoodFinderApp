@@ -78,11 +78,11 @@ public class User {
 
     //Could create a new businessIndex and add to it if index doesn't already exist, IDK
     public void incrementPoints(int businessIndex, int pointAmount){
-        System.out.print("Point Count: ");
-
-
-        System.out.println(pointsCount);
         pointsCount.put(businessIndex, pointAmount+pointsCount.get(businessIndex));
+    }
+
+    public void decrementPoints(int businessIndex, int pointAmount){
+        pointsCount.put(businessIndex, pointsCount.get(businessIndex)-pointAmount);
     }
 
     public void setPicture(Bitmap pic){

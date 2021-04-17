@@ -100,4 +100,9 @@ public class Business implements Serializable {
         m_rewards.add(reward);
     }
 
+    // Getter for list of rewards
+    public ArrayList<Reward> getRewards () {
+        return m_rewards;
+    }
+
 }
