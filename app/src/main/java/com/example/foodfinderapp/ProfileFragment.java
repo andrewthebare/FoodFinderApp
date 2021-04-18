@@ -20,8 +20,8 @@ import static android.app.Activity.RESULT_OK;
  *   Fragment for profile page
  */
 public class ProfileFragment extends Fragment {
-    Button switchUser;
-    EditText editUserNum;
+//    Button switchUser;
+//    EditText editUserNum;
 
     ImageView profilePic;
     Button changePicBTN;
@@ -58,8 +58,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        switchUser = view.findViewById(R.id.switchUser);
-        editUserNum = (EditText) view.findViewById(R.id.userSwitchNum);
+//        switchUser = view.findViewById(R.id.switchUser);
+//        editUserNum = (EditText) view.findViewById(R.id.userSwitchNum);
         profilePic = (ImageView) view.findViewById(R.id.profilePic);
         changePicBTN = (Button) view.findViewById(R.id.changePictureBTN);
         logoutBTN = (Button) view.findViewById(R.id.logOut);
@@ -87,12 +87,12 @@ public class ProfileFragment extends Fragment {
             profilePic.setImageBitmap(currentUser.profilePic);
         }
 
-        switchUser.setOnClickListener(this::onSwitchUserClick);
+//        switchUser.setOnClickListener(this::onSwitchUserClick);
     }
 
-    public void onSwitchUserClick(View view){
-        Database.getInstance().setCurrentUser(Integer.parseInt(editUserNum.getText().toString()));
-    }
+//    public void onSwitchUserClick(View view){
+//        Database.getInstance().setCurrentUser(Integer.parseInt(editUserNum.getText().toString()));
+//    }
 
     // From Zybooks
     public void takePhotoClick(View view) {

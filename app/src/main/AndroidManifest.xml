@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodFinderApp">
-        <activity android:name=".loginScreen"></activity>
+        <activity android:name=".CreateAccount"></activity>
+        <activity android:name=".loginScreen" />
         <activity android:name=".BusinessActivity" />
 
         <meta-data

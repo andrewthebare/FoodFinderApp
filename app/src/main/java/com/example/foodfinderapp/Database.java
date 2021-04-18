@@ -113,7 +113,6 @@ public class Database {
 
     public boolean validateUser(String username, String password){
         for (User u : m_users){
-            Log.d("User", u.name + ": " + Integer.toString(u.getIndex()));
             if(u.userName.equals(username) && u.checkPassword(password)){
                 Log.d("FOUND!", u.name + ": " + Integer.toString(u.getIndex()));
                 setCurrentUser(u.getIndex()-1);
@@ -121,6 +120,19 @@ public class Database {
             }
         }
         return false;
+    }
+
+    public boolean UsernameExists(String username){
+        for (User u :m_users){
+            if (u.userName.equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void createNewUser(String name, String uName, String password){
+        m_users.add(new User(name, uName, password));
     }
 
 }
