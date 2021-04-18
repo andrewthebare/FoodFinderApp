@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
@@ -45,6 +47,10 @@ public class BusinessActivity extends AppCompatActivity {
     RecyclerView m_recyclerView;
     BusinessActivity.Adapter m_adapter;
 
+    SoundPool soundPool;
+    boolean soundLoad = false;
+    int dingID;
+
     // Called when activity is created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +80,6 @@ public class BusinessActivity extends AppCompatActivity {
                 Database.getInstance().getCurrentUser().addBusiness(m_business);
                 currentUser = Database.getInstance().getCurrentUser();
             }
-            m_pointDisplay.setText(Integer.toString(currentUser.getPoints(m_business.getIndex())));
             updateSetIfSavedBtn();
 
             // Create the recycler view
@@ -85,6 +90,22 @@ public class BusinessActivity extends AppCompatActivity {
 
         }
 
+        //from zybooks
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(attributes)
+                .build();
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId,
+                                       int status) {
+                soundLoad = true;
+            }
+        });
+        dingID = soundPool.load(getBaseContext(), R.raw.ding, 1);
     }
 
     // Called when setIfSavedBtn is clicked
@@ -150,8 +171,8 @@ public class BusinessActivity extends AppCompatActivity {
 
                 //TODO refreshes page, not sure if that's great practice tho
                 //Actually causes an error that doesn't crash the app soooooo idk
-                finish();
-                this.startActivity(getIntent());
+//                finish();
+                redrawPage();
 
             }else{
                 //Tell user they entered a wrong number
@@ -164,6 +185,7 @@ public class BusinessActivity extends AppCompatActivity {
     // Redraws the page
     private void redrawPage () {
         ArrayList<Reward> rewards = Database.getInstance().getBusiness(m_business.getIndex()).getRewards();
+        m_pointDisplay.setText(Integer.toString(currentUser.getPoints(m_business.getIndex())));
 
         // Refresh adapter
         m_adapter = new BusinessActivity.Adapter(rewards);
@@ -241,6 +263,10 @@ public class BusinessActivity extends AppCompatActivity {
                         // Called when button in list is clicked on
                         @Override
                         public void onClick (View view) {
+                            //sound
+                            if(soundLoad) {
+                                soundPool.play(dingID, 1, 1, 1, 0, 1.5f);
+                            }
                             currentUser.decrementPoints(m_business.getIndex(), m_rewards.get(position).getPointsNeededToClaim());
                             redrawPage();
                             m_pointDisplay.setText(Integer.toString(Database.getInstance().getCurrentUser().getPoints(m_business.getIndex())));
