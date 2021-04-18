@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.util.Log;
 
 import androidx.core.content.res.ResourcesCompat;
 
@@ -105,8 +106,33 @@ public class Database {
         m_businesses.get(business.getIndex()).setIfSaved(isSaved);
     }
 
+    //Possible TODO: This kinda a cheap way to do this
     public void setCurrentUser(int index){
         currentUser = m_users.get(index);
+    }
+
+    public boolean validateUser(String username, String password){
+        for (User u : m_users){
+            if(u.userName.equals(username) && u.checkPassword(password)){
+                Log.d("FOUND!", u.name + ": " + Integer.toString(u.getIndex()));
+                setCurrentUser(u.getIndex()-1);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean UsernameExists(String username){
+        for (User u :m_users){
+            if (u.userName.equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void createNewUser(String name, String uName, String password){
+        m_users.add(new User(name, uName, password));
     }
 
 }

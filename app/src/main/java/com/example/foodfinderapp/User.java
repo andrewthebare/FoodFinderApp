@@ -7,12 +7,13 @@ import java.util.HashMap;
 import java.util.function.Predicate;
 
 public class User {
-    private static int numberOfUsers;
+    private static int numberOfUsers = 0;
 
     private int id;
     public String name;
     public String userName;
     public Bitmap profilePic;
+    private String pw;
     private ArrayList<Business> favoriteBusList;
     private ArrayList<Integer> favoriteBusIndexList;
     private HashMap<Integer, Integer> pointsCount;
@@ -20,6 +21,21 @@ public class User {
     public User(String name, String uName){
         numberOfUsers++;
         this.name = name;
+        pw = "password";
+        userName = uName;
+        profilePic = null;
+
+        //weak and breaks if you delete users, but we won't worry about that
+        id = numberOfUsers;
+
+        favoriteBusIndexList = new ArrayList<>();
+        favoriteBusList = new ArrayList<>();
+        pointsCount = new HashMap<>();
+    }
+    public User(String name, String uName, String pw){
+        numberOfUsers++;
+        this.name = name;
+        this.pw=pw;
         userName = uName;
         profilePic = null;
 
@@ -73,6 +89,14 @@ public class User {
      */
     public int getPoints(int businessIndex){
         return pointsCount.get(businessIndex);
+    }
+
+    public int getIndex(){
+        return id;
+    }
+
+    public boolean checkPassword(String password){
+        return pw.equals(password);
     }
 
 

@@ -20,11 +20,12 @@ import static android.app.Activity.RESULT_OK;
  *   Fragment for profile page
  */
 public class ProfileFragment extends Fragment {
-    Button switchUser;
-    EditText editUserNum;
+//    Button switchUser;
+//    EditText editUserNum;
 
     ImageView profilePic;
     Button changePicBTN;
+    Button logoutBTN;
     TextView nameDisplay;
     TextView usernameDisplay;
 
@@ -57,10 +58,11 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        switchUser = view.findViewById(R.id.switchUser);
-        editUserNum = (EditText) view.findViewById(R.id.userSwitchNum);
+//        switchUser = view.findViewById(R.id.switchUser);
+//        editUserNum = (EditText) view.findViewById(R.id.userSwitchNum);
         profilePic = (ImageView) view.findViewById(R.id.profilePic);
         changePicBTN = (Button) view.findViewById(R.id.changePictureBTN);
+        logoutBTN = (Button) view.findViewById(R.id.logOut);
         nameDisplay = (TextView) view.findViewById(R.id.profileNameTV);
         usernameDisplay = (TextView) view.findViewById(R.id.profileUsernameTV);
 
@@ -69,6 +71,13 @@ public class ProfileFragment extends Fragment {
 
         nameDisplay.setText(currentUser.name);
         usernameDisplay.setText('@'+ currentUser.userName);
+        logoutBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), loginScreen.class);
+                startActivity(intent);
+            }
+        });
         changePicBTN.setOnClickListener(this::takePhotoClick);
         //TODO find better default pic
         if(currentUser.profilePic == null){
@@ -78,12 +87,12 @@ public class ProfileFragment extends Fragment {
             profilePic.setImageBitmap(currentUser.profilePic);
         }
 
-        switchUser.setOnClickListener(this::onSwitchUserClick);
+//        switchUser.setOnClickListener(this::onSwitchUserClick);
     }
 
-    public void onSwitchUserClick(View view){
-        Database.getInstance().setCurrentUser(Integer.parseInt(editUserNum.getText().toString()));
-    }
+//    public void onSwitchUserClick(View view){
+//        Database.getInstance().setCurrentUser(Integer.parseInt(editUserNum.getText().toString()));
+//    }
 
     // From Zybooks
     public void takePhotoClick(View view) {
