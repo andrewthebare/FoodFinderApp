@@ -25,6 +25,7 @@ public class ProfileFragment extends Fragment {
 
     ImageView profilePic;
     Button changePicBTN;
+    Button logoutBTN;
     TextView nameDisplay;
     TextView usernameDisplay;
 
@@ -61,6 +62,7 @@ public class ProfileFragment extends Fragment {
         editUserNum = (EditText) view.findViewById(R.id.userSwitchNum);
         profilePic = (ImageView) view.findViewById(R.id.profilePic);
         changePicBTN = (Button) view.findViewById(R.id.changePictureBTN);
+        logoutBTN = (Button) view.findViewById(R.id.logOut);
         nameDisplay = (TextView) view.findViewById(R.id.profileNameTV);
         usernameDisplay = (TextView) view.findViewById(R.id.profileUsernameTV);
 
@@ -69,6 +71,13 @@ public class ProfileFragment extends Fragment {
 
         nameDisplay.setText(currentUser.name);
         usernameDisplay.setText('@'+ currentUser.userName);
+        logoutBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), loginScreen.class);
+                startActivity(intent);
+            }
+        });
         changePicBTN.setOnClickListener(this::takePhotoClick);
         //TODO find better default pic
         if(currentUser.profilePic == null){
