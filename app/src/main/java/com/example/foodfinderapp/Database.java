@@ -42,10 +42,10 @@ public class Database {
         b0.addReceipt(111, 100);
         m_businesses.add(b0);
 
-        Business b1 = new Business("Tiger Sports Shop", "Sportswear Store", 34.6830f, -82.8372f);
-        b1.addReward(new Reward("Free Small Car Decal", "", 100));
+        Business b1 = new Business("356 Sushi", "Sushi Restaurant", 34.6830f, -82.8372f);
+        b1.addReward(new Reward("Free Sushi Roll", "", 100));
         b1.addReward(new Reward("15% Off Purchase", "", 250));
-        b1.addReward(new Reward("Free T-Shirt", "", 500));
+        b1.addReward(new Reward("Free Dinner", "", 500));
         b1.addReceipt(000, 50);
         b1.addReceipt(111, 50);
         m_businesses.add(b1);

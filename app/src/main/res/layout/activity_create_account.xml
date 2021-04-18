@@ -10,8 +10,9 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="32dp"
         android:text="Create Account"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,18 +22,13 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="69dp"
+        android:layout_marginEnd="32dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="username: " />
 
         <EditText
             android:id="@+id/newUsernameEdit"
@@ -40,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:ems="10"
+            android:hint="username"
             android:inputType="textPersonName" />
 
     </LinearLayout>
@@ -48,17 +45,13 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Name: " />
 
         <EditText
             android:id="@+id/newNameEdit"
@@ -66,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:ems="10"
+            android:hint="name"
             android:inputType="textPersonName" />
 
     </LinearLayout>
@@ -74,17 +68,13 @@
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="password: " />
 
         <EditText
             android:id="@+id/newPasswordEdit"
@@ -92,7 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:hint="password"
+            android:inputType="textPassword" />
 
     </LinearLayout>
 
@@ -101,8 +92,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:layout_marginEnd="56dp"
         android:text="Create"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
