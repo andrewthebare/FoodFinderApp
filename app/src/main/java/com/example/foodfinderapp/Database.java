@@ -1,3 +1,9 @@
+/**
+ *   Names: Matthew Held and Andrew Bare
+ *   Emails: mjheld@clemson.edu
+ *           abare@clemson.edu
+ */
+
 package com.example.foodfinderapp;
 
 import android.content.res.Resources;
