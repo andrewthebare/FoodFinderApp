@@ -13,15 +13,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodFinderApp">
-        <activity android:name=".CreateAccount"></activity>
-        <activity android:name=".loginScreen" />
-        <activity android:name=".BusinessActivity" />
+        <activity android:name=".CreateAccount"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".loginScreen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".BusinessActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
